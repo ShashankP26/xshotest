@@ -1,0 +1,56 @@
+{% extends "gstbillingapp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<h2>Add Bank Details</h2>
+<form method="POST">
+	{% csrf_token %}
+	<table class="table">
+		<tbody class="two-col-form">
+            <!-- User Credentials -->
+            <tr>
+                <th scope="row" class="text-right">Bank Name:</th>
+                <td class="form-input-td"><input type="text" name="bankname" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th scope="row" class="text-right">Account Holder Name:</th>
+                <td class="form-input-td"><input type="text" name="acc_holder_name" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th scope="row" class="text-right">Account Number:</th>
+                <td class="form-input-td"><input type="text" name="account_number" class="form-control" required></td>
+            </tr>
+        
+            <!-- Business Details -->
+            <tr>
+                <th scope="row" class="text-right">IFSC Code:</th>
+                <td class="form-input-td"><input type="text" name="ifcs_code" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th scope="row" class="text-right">Branch Name:</th>
+                <td class="form-input-td"><input type="text" name="branch_name" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th scope="row" class="text-right">Address:</th>
+                <td class="form-input-td"><input type="text" name="address" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th scope="row" class="text-right">Phone:</th>
+                <td class="form-input-td"><input type="tel" name="phone_number" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th scope="row" class="text-right">Email:</th>
+                <td class="form-input-td"><input type="email" name="email_b" class="form-control"></td>
+            </tr>
+        </tbody>
+        
+	</table>
+
+	<input type="submit" class="btn btn-primary float-right" value="Submit">
+</form>
+
+
+{% endblock  %}

@@ -1,0 +1,357 @@
+{% extends "gstbillingapp/base.html" %}
+
+
+{% load static %}
+<!doctype html>
+
+{% block content %}
+
+<h2>Create Credit Note</h2>
+
+<form method="POST" id="invoice-form" hidden="true">
+
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th class="table-active" scope="col" colspan="4">Credit Note Details</th>
+			</tr>
+		</thead>
+
+		<tbody class="two-col-form">
+			<tr>
+				<th scope="row">Credit Note Number</th>
+				<td class="form-input-td"><input name="invoice-number" type="number" class="form-control" placeholder="Credit Note Number" value="{{default_invoice_number}}"></td>
+				<th scope="row">Date</th>
+				<td class="form-input-td"><input name="invoice-date" type="date" class="form-control", value="{{default_invoice_date}}"></td>
+			</tr>
+			<th scope="row"> TIN Number</th>
+				<td class="form-input-td"><input name="supplier_tin_number" id="supplier_tin_number" type="text" class="form-control" placeholder="Supplier TIN Number"></td>
+			<th scope="row"> Pan Number</th>
+				<td class="form-input-td"><input name="sup_pan_number" id="sup_pan_number" type="text" class="form-control" placeholder="Supplier Pan Number"></td>
+		</tbody>
+	</table>
+	
+
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th class="table-active" scope="col" colspan="4">Customer Details</th>
+			</tr>
+		</thead>
+	
+		<tbody class="two-col-form">
+			<tr>
+				<th scope="row">Customer Name</th>
+				<td class="form-input-td customer_search_area"><input autocomplete="off" name="customer-name" type="text" class="form-control customer_search_input" id="customer-name-input" placeholder="Customer Name" required></td>
+				<th scope="row">Customer Address</th>
+				<td class="form-input-td"><input autocomplete="off" name="customer-address" type="text" class="form-control" id="customer-address-input" placeholder="Customer Address" required></td>
+			</tr>
+			<tr>
+				<th scope="row">Customer Mobile Number</th>
+				<td class="form-input-td"><input autocomplete="off" name="customer-phone" type="tel" class="form-control" id="customer-phone-input" placeholder="Customer Mobile Number"></td>
+				<th scope="row">Customer GST</th>
+				<td class="form-input-td"><input autocomplete="off" name="customer-gst" type="text" class="form-control" id="customer-gst-input" placeholder="Customer GST" maxlength="15" pattern="([A-Za-z0-9]{15})|(^$)"></td>
+			</tr>
+			<tr>
+				<th scope="row">Customer PAN Number</th>
+				<td class="form-input-td"><input name="buyer_pan_number" type="text" class="form-control" id="customer-pan-input" placeholder="Customer PAN Number"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<div class="form-check my-3">
+		<input class="form-check-input" type="checkbox" id="same-as-billing-checkbox" >
+		<label class="form-check-label" for="same-as-billing-checkbox">
+			Ship to same as Bill To
+		</label>
+	</div>
+	
+	<!-- Shipping fields always visible -->
+	<div id="shipping-fields">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th class="table-active" scope="col" colspan="4">Shipping Details</th>
+				</tr>
+			</thead>
+			<tbody class="two-col-form">
+				<tr>
+					<th scope="row">Shipping Name</th>
+					<td class="form-input-td"><input autocomplete="off" name="shipping-name" type="text" class="form-control" id="shipping-name-input" placeholder="Shipping Name"></td>
+					<th scope="row">Shipping Address</th>
+					<td class="form-input-td"><input autocomplete="off" name="shipping-address" type="text" class="form-control" id="shipping-address-input" placeholder="Shipping Address"></td>
+				</tr>
+				<tr>
+					<th scope="row">Shipping Mobile Number</th>
+					<td class="form-input-td"><input autocomplete="off" name="shipping-phone" type="tel" class="form-control" id="shipping-phone-input" placeholder="Shipping Mobile Number"></td>
+					<th scope="row">Shipping GST</th>
+					<td class="form-input-td"><input autocomplete="off" name="shipping-gst" type="text" class="form-control" id="shipping-gst-input" placeholder="Shipping GST" maxlength="15" pattern="([A-Za-z0-9]{15})|(^$)"></td>
+				</tr>
+				<tr>
+					<th scope="row">Shipping PAN Number</th>
+					<td class="form-input-td"><input name="shipping_tin_number" type="text" class="form-control" id="shipping-tin-input" placeholder="Shipping PAN Number"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<table class="table table-bordered">
+		<tbody class="two-col-form">
+			<tr>
+				<th scope="row">PO Number</th>
+				<td class="form-input-td">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" id="use-input-checkbox">
+						<label class="form-check-label" for="use-input-checkbox">
+							Enter PO Manually
+						</label>
+					</div>
+				</td>
+				<td class="form-input-td">
+					<!-- Dropdown for selecting PO numbers -->
+					<select id="vehicle-number-dropdown" name="vehicle-number-dropdown" class="form-control">
+						<option value="">Select PO Number</option>
+					</select>
+					
+					<!-- Input field for manually entering new PO (Initially Disabled) -->
+					<input type="text" id="new-po-input" name="vehicle-number" class="form-control" placeholder="Enter New PO" readonly>
+				</td>
+				<td class="form-input-td ms-3">
+					<div class="form-check">
+						<input class="form-check-input" name="igstcheck" type="checkbox" id="igstcheck">
+						<label class="form-check-label" for="igstcheck">
+							IGST
+						</label>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">Project Description</th>
+				<td class="form-input-td" colspan="3">
+					<input name="project_description" type="text" class="form-control" placeholder="Project Description">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="table table-bordered">
+		<tbody class="two-col-form">
+			<tr>
+				<th scope="row">Select Bank <span style="color: red;">*</span></th>
+				<td class="form-input-td">
+					<select name="bank_id" id="bank_id" class="form-select custom-dropdown" required>
+						<option value="" selected disabled>Select Bank</option>
+						{% for bank in banks %}
+							<option value="{{ bank.id }}">{{ bank.bank_name }} - {{ bank.account_number }}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td class="form-input-td"></td>
+			</tr>
+			
+		</tbody>
+		
+		
+		<!-- Terms and Conditions Table (Initially Hidden) -->
+		<table class="table table-bordered mt-2" id="termsTable" style="display: none;">
+			<thead>
+				<tr>
+					<th class="table-active" scope="col" colspan="4">Terms and Conditions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="4">
+						<textarea name="terms_and_conditions" class="form-control" rows="3" placeholder="Enter terms and conditions"></textarea>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="form-check">
+			<input type="checkbox" class="form-check-input" id="toggleTermsCheckbox">
+			<label class="form-check-label" for="toggleTermsCheckbox">Show Terms and Conditions</label>
+		</div>
+		
+	</table>
+
+	<table class="table table-bordered" id="invoice-form-items-table">
+		<thead>
+			<th class="table-active" scope="col" colspan="13">Items</th>
+
+			<tr>
+				<th scope="col">Sl No.</th>
+				<th scope="col">Product</th>
+				<th scope="col">HSN / SAC</th>
+				<th scope="col">Unit</th>
+				<th scope="col">Qty</th>
+				<th scope="col">Rate with GST</th>
+				<th scope="col">GST %</th>
+				<th scope="col">Rate without GST</th>
+
+
+				<th scope="col">Amt without GST</th>
+				<th scope="col">SGST</th>
+				<th scope="col">CGST</th>
+				<th scope="col">IGST</th>
+				<th scope="col">Amt with GST</th>
+
+			</tr>
+		</thead>
+		<tbody id="invoice-form-items-table-body">
+			<tr>
+				<td class="invoice-item-slno">1</td>
+				<td class="form-input-td"><input name="invoice-product" type="text" class="form-control product_search_area product_search_input" placeholder="Product"></td>
+				<td class="form-input-td"><input name="invoice-hsn" type="text" class="form-control" placeholder="HSN"></td>
+				<td class="form-input-td"><input name="invoice-unit" type="text" class="form-control" placeholder="Unit"></td>
+				<td class="form-input-td"><input name="invoice-qty" type="number" step="any" class="form-control" placeholder="Qty"></td>
+				<td class="form-input-td"><input name="invoice-rate-with-gst" type="number" step="any" class="form-control" placeholder="Rate with GST"></td>
+				<td class="form-input-td"><input name="invoice-gst-percentage" type="number" step="any" class="form-control" placeholder="GST %"></td>
+
+
+				<td class="form-input-td"><input name="invoice-rate-without-gst" type="number" step="any" class="form-control" placeholder="Rate without GST" readonly></td>
+				<td class="form-input-td"><input name="invoice-amt-without-gst" type="number" step="any" class="form-control" readonly></td>
+				<td class="form-input-td"><input name="invoice-amt-sgst" type="number" step="any" class="form-control" readonly></td>
+				<td class="form-input-td"><input name="invoice-amt-cgst" type="number" step="any" class="form-control" readonly></td>
+				<td class="form-input-td"><input name="invoice-amt-igst" type="number" step="any" class="form-control" readonly></td>
+				<td class="form-input-td"><input name="invoice-amt-with-gst" type="number" step="any" class="form-control" readonly></td>
+			</tr>
+		</tbody>
+
+		<tr>
+			<td colspan="8" class="text-right"><strong>TOTAL:</strong></td>
+			<td class="form-input-td"><input name="invoice-total-amt-without-gst" type="number" step="any" class="form-control" readonly></td>
+			<td class="form-input-td"><input name="invoice-total-amt-sgst" type="number" step="any" class="form-control" readonly></td>
+			<td class="form-input-td"><input name="invoice-total-amt-cgst" type="number" step="any" class="form-control" readonly></td>
+			<td class="form-input-td"><input name="invoice-total-amt-igst" type="number" step="any" class="form-control" readonly></td>
+			<td class="form-input-td"><input name="invoice-total-amt-with-gst" type="number" step="any" class="form-control" readonly></td>
+		</tr>
+
+	</table>
+	{% csrf_token %}
+	<button class="btn btn-primary" id="invoice-form-addrow">+</button>
+	<button type="submit" class="btn btn-primary">Submit</button>
+	
+</form>
+
+
+</div>
+<div id="customer_search_bar"></div>
+<div id="product_search_bar"></div>
+<script>
+	document.getElementById('same-as-billing-checkbox').addEventListener('change', function () {
+		const isChecked = this.checked;
+	
+		if (isChecked) {
+			// Copy billing to shipping
+			document.getElementById('shipping-name-input').value = document.getElementById('customer-name-input').value;
+			document.getElementById('shipping-address-input').value = document.getElementById('customer-address-input').value;
+			document.getElementById('shipping-phone-input').value = document.getElementById('customer-phone-input').value;
+			document.getElementById('shipping-gst-input').value = document.getElementById('customer-gst-input').value;
+			document.getElementById('shipping-tin-input').value = document.getElementById('customer-pan-input').value;
+			document.getElementById('shipping-tin-input').value = document.getElementById('customer-tin-input').value;
+		} else {
+			// Clear shipping fields
+			document.getElementById('shipping-name-input').value = '';
+			document.getElementById('shipping-address-input').value = '';
+			document.getElementById('shipping-phone-input').value = '';
+			document.getElementById('shipping-gst-input').value = '';
+			document.getElementById('shipping-pan-input').value = '';
+			document.getElementById('shipping-tin-input').value = '';
+		}
+	});
+</script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const checkbox = document.getElementById("use-input-checkbox");
+		const dropdown = document.getElementById("vehicle-number-dropdown");
+		const inputField = document.getElementById("new-po-input");
+	
+		checkbox.addEventListener("change", function () {
+			if (checkbox.checked) {
+				dropdown.style.display = "none";
+				inputField.style.display = "block";
+		
+				inputField.readOnly = false;   // enable typing
+				inputField.value = "";
+			} else {
+				dropdown.style.display = "block";
+				inputField.style.display = "none";
+		
+				inputField.readOnly = true;    // prevent typing
+				inputField.value = dropdown.value; // sync value
+			}
+		});
+		dropdown.addEventListener("change", function () {
+			inputField.value = dropdown.value;
+		});
+	});
+	document.getElementById("toggleTermsCheckbox").addEventListener("change", function () {
+        let termsTable = document.getElementById("termsTable");
+        termsTable.style.display = this.checked ? "table" : "none";
+    });
+	</script>
+<style>
+    .custom-dropdown {
+        width: 100%; /* Makes dropdown wider */
+        max-width: 800px; /* Adjust max width as needed */
+        background-color: #f8f9fa; /* Soft background */
+        border: 1px solid #ced4da; /* Light gray border */
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 5px; /* Rounded corners */
+    }
+    .custom-dropdown:focus {
+        border-color: #007bff; /* Blue border on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+</style>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const customerInput = document.getElementById("customer-name-input"); // Customer Name input
+		const vehicleDropdown = document.getElementById("vehicle-number-dropdown"); // PO Number dropdown
+	
+		customerInput.addEventListener("change", function () { // Trigger on selection
+			const customerName = customerInput.value.trim();
+	
+			if (customerName.length > 0) {
+				fetch(`/get-all-vehicle-numbers-by-name/?customer_name=${encodeURIComponent(customerName)}`)
+					.then(response => response.json())
+					.then(data => {
+						vehicleDropdown.innerHTML = ""; // Clear previous options
+	
+						if (data.vehicle_numbers.length > 0) {
+							let defaultOption = document.createElement("option");
+							defaultOption.value = "";
+							defaultOption.textContent = "Select PO Number";
+							vehicleDropdown.appendChild(defaultOption);
+	
+							data.vehicle_numbers.forEach(vehicle => {
+								let option = document.createElement("option");
+								option.value = vehicle;
+								option.textContent = vehicle;
+								vehicleDropdown.appendChild(option);
+							});
+						} else {
+							let option = document.createElement("option");
+							option.value = "";
+							option.textContent = "No PO found";
+							vehicleDropdown.appendChild(option);
+						}
+					})
+					.catch(error => console.error("Error fetching PO numbers:", error));
+			}
+		});
+	});
+	</script>
+	
+
+{% endblock %}
+
+
+
+{% block includejs %}
+<script src="{% static "gstbillingapp/js/fuse-3.4.6.min.js" %}"></script>
+<script src="{% static "gstbillingapp/js/main.js" %}"></script>
+{% endblock %}

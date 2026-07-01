@@ -1,0 +1,29 @@
+{% extends "gstbillingapp/base.html" %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="jumbotron">
+	<br>
+		<br><br>
+	<h1 class="display-3">XsHoT</h1>
+	<h2 class="display-6">Simplest <b>GST invoicing</b> App.</h2>
+	<hr class="my-4">
+	<h4>
+	<ul>
+		 <li>Easily create invoices</li>
+		 <li>Manage inventory</li>
+		 <li>Keep books and track balances</li>
+	</ul>
+	</h4>
+	<p class="lead">
+		<a class="btn btn-primary btn-lg" href="{% url 'invoice_create' %}" role="button">Create Invoice</a>
+	</p>
+	<br><br>
+		<br>
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "gstbillingapp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <!-- Header Row -->
+    <div class="row align-items-center mb-3">
+        <div class="col-md-6">
+            <h2 class="mb-0">Banks</h2>
+        </div>
+        <div class="col-md-6 text-md-end text-start">
+            <a href="{% url 'banks' %}" id="add_product_btn">
+                <button type="button" class="btn btn-primary">Add New Bank</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bank Details Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            
+                <tr>
+
+                    <th>Sl</th>
+                    <th>Bank Name</th>
+                    <th>Branch</th>
+                    <th>Account No</th>
+                    <th>IFSC Code</th>
+                </tr>
+            <tbody>
+                {% for bank in banks %}
+                <tr>
+                    <td>{{ forloop.counter}}</td>
+                    <td>{{ bank.bank_name }}</td>
+                    <td>{{ bank.branch_name }}</td>
+                    <td>{{ bank.account_number }}</td>
+                    <td>{{ bank.ifsc_code }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+	<a class="navbar-brand" href="{% url 'landing_page' %}">XsHoT - Xpredict Labs</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			{% if user.is_authenticated %}
+			
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'invoice_create' %}">New Invoice <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'invoices' %}">Invoices</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'credit_note_create' %}">New Credit Note</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'credit_notes' %}">Credit Notes</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'inventory' %}">Inventory</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'books' %}">Books</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'customers' %}">Customers</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'products' %}">Products</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'displaybanks' %}">Bank</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'user_profile' %}">Profile</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'signup_view' %}">New Profile</a>
+			</li>
+			<li class="nav-item d-flex align-items-center">
+				<form method="post" action="{% url 'logout' %}" style="display: inline;">
+					{% csrf_token %}
+					<button type="submit" class="nav-link btn btn-link p-0 m-0 align-baseline" style="border: none; background: none;">
+						Logout
+					</button>
+				</form>
+			</li>
+			{% endif %}
+		</ul>
+	</div>
+</nav>
